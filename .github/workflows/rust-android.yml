@@ -1,4 +1,4 @@
-name: Build Native Rust Android APK & WASM Demo
+name: Build Native Android APK & WASM Demo
 
 on:
   push:
@@ -16,6 +16,10 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: aarch64-linux-android,armv7-linux-androideabi,wasm32-unknown-unknown
+
+      - name: Install Android SDK Platform 29
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-29" "build-tools;29.0.3"
 
       - name: Install cargo-quad-apk
         run: cargo install --locked cargo-quad-apk
