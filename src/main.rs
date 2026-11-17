@@ -722,7 +722,7 @@ impl Game {
         // Update bullets
         for i in 0..self.bullets.len() {
             if !self.bullets[i].active { continue; }
-            self.bullets[i].pos += self.bullets[i].vel * dt;
+            let vel = self.bullets[i].vel; self.bullets[i].pos += vel * dt;
             self.bullets[i].life -= dt;
             if self.bullets[i].life <= 0.0 || self.bullets[i].pos.length() > ARENA_RADIUS {
                 self.bullets[i].active = false;
