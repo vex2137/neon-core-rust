@@ -1,0 +1,62 @@
+name: Build Native Rust Android APK & WASM Demo
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust & Android Targets
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,armv7-linux-androideabi,wasm32-unknown-unknown
+
+      - name: Install cargo-quad-apk
+        run: cargo install --locked cargo-quad-apk
+
+      - name: Build Native Android APK (Release)
+        run: |
+          export NDK_HOME="${ANDROID_NDK_LATEST_HOME:-$ANDROID_HOME/ndk/$(ls $ANDROID_HOME/ndk | tail -n 1)}"
+          cargo quad-apk build --release
+
+      - name: Upload Native Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: neon-core-rust-android-apk
+          path: target/android-artifacts/**/*.apk
+
+      - name: Build WASM Web Demo (itch.io)
+        run: |
+          cargo build --release --target wasm32-unknown-unknown --features demo
+          mkdir -p web-demo
+          cp target/wasm32-unknown-unknown/release/neon-core.wasm web-demo/
+          curl -sL https://not-fl3.github.io/miniquad-samples/mq_js_bundle.js -o web-demo/mq_js_bundle.js
+          cat << 'IDX' > web-demo/index.html
+          <!doctype html>
+          <html lang="pl">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+            <title>NEON CORE [RUST WASM DEMO]</title>
+            <style>html, body, canvas { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #04060b; touch-action: none; }</style>
+          </head>
+          <body>
+            <canvas id="glcanvas" tabindex="1"></canvas>
+            <script src="mq_js_bundle.js"></script>
+            <script>load("neon-core.wasm");</script>
+          </body>
+          </html>
+          IDX
+          cd web-demo && zip -r ../neon-core-rust-wasm-demo.zip .
+
+      - name: Upload WASM Web Demo
+        uses: actions/upload-artifact@v4
+        with:
+          name: neon-core-rust-wasm-demo
+          path: neon-core-rust-wasm-demo.zip

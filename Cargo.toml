@@ -1,0 +1,23 @@
+[package]
+name = "neon-core"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = []
+demo = []
+
+[dependencies]
+macroquad = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
+[package.metadata.android]
+package = "dev.vex.neoncore"
+label = "Neon Core"
+fullscreen = true
+orientation = "landscape"
