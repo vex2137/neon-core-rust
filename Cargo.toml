@@ -17,7 +17,5 @@ codegen-units = 1
 strip = true
 
 [package.metadata.android]
-package = "dev.vex.neoncore"
+package_name = "dev.vex.neoncore"
 label = "Neon Core"
-fullscreen = true
-orientation = "landscape"
