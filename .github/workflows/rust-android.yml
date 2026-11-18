@@ -12,11 +12,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Java 8 (for rt.jar)
+      - name: Setup Java 17 (for Android SDK manager)
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '8'
+          java-version: '17'
 
       - name: Install Rust & Android Targets
         uses: dtolnay/rust-toolchain@stable
@@ -26,6 +26,12 @@ jobs:
       - name: Install Android SDK Platform 29
         run: |
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-29" "build-tools;29.0.3"
+
+      - name: Setup Java 8 (for cargo-quad-apk rt.jar)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '8'
 
       - name: Install cargo-quad-apk
         run: cargo install --locked cargo-quad-apk
