@@ -35,6 +35,10 @@ jobs:
             ln -sf "$BIN_DIR/llvm-ar" "$BIN_DIR/${arch}-ar"
             ln -sf "$BIN_DIR/llvm-ranlib" "$BIN_DIR/${arch}-ranlib"
             ln -sf "$BIN_DIR/ld.lld" "$BIN_DIR/${arch}-ld"
+            ln -sf "$BIN_DIR/llvm-readelf" "$BIN_DIR/${arch}-readelf"
+            ln -sf "$BIN_DIR/llvm-objdump" "$BIN_DIR/${arch}-objdump"
+            ln -sf "$BIN_DIR/llvm-strip" "$BIN_DIR/${arch}-strip"
+            ln -sf "$BIN_DIR/llvm-nm" "$BIN_DIR/${arch}-nm"
           done
 
           cp -f $(find "$TOOLCHAIN" -path "*/linux/arm/libunwind.a" | head -n 1) "$SYSROOT_LIB/arm-linux-androideabi/libunwind.a"
