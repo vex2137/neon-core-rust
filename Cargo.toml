@@ -19,3 +19,4 @@ strip = true
 [package.metadata.android]
 package_name = "dev.vex.neoncore"
 label = "Neon Core"
+build_targets = ["aarch64-linux-android"]
