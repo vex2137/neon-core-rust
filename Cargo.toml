@@ -17,6 +17,8 @@ codegen-units = 1
 strip = true
 
 [package.metadata.android]
+android_version = 30
+target_sdk_version = 29
 package_name = "dev.vex.neoncore"
 label = "Neon Core"
 build_targets = ["aarch64-linux-android"]
