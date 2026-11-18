@@ -27,6 +27,15 @@ jobs:
         run: |
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-30" "build-tools;29.0.3"
 
+      - name: Select legacy Android Build Tools for cargo-quad-apk
+        run: |
+          # cargo-quad-apk 0.1.4 picks the highest installed build-tools version
+          # and invokes dx, which was removed from newer Android Build Tools.
+          # Keep only 29.0.3 on this disposable CI runner.
+          test -x "$ANDROID_HOME/build-tools/29.0.3/dx"
+          find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d ! -name '29.0.3' -exec rm -rf -- {} +
+          ls -l "$ANDROID_HOME/build-tools/29.0.3/dx"
+
       - name: Setup Java 8 (for cargo-quad-apk rt.jar)
         uses: actions/setup-java@v4
         with:
