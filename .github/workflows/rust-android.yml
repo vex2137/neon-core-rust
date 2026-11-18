@@ -31,8 +31,9 @@ jobs:
           for arch in arm-linux-androideabi aarch64-linux-android i686-linux-android x86_64-linux-android; do
             ln -sf "$BIN_DIR/llvm-ar" "$BIN_DIR/${arch}-ar"
             ln -sf "$BIN_DIR/llvm-ranlib" "$BIN_DIR/${arch}-ranlib"
+            ln -sf "$BIN_DIR/ld.lld" "$BIN_DIR/${arch}-ld"
           done
-          cargo quad-apk build --release --target aarch64-linux-android
+          cargo quad-apk build --release
 
       - name: Upload Native Android APK
         uses: actions/upload-artifact@v4
